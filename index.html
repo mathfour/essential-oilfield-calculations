@@ -12,6 +12,7 @@
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     
     <link rel="stylesheet"
           type="text/css"
@@ -126,7 +127,33 @@
             <!--<div id="save-formular"></div>-->
             
             <h3>Saved Calculations</h3>
-            <p id="display">Lorem ipsum...</p>
+            <p id="display">Inner Capacity (put the name of the calcuation here dynamically)</p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="somethingTitle">Employee Name</th>
+                    <th>Role</th>
+                    <th>Start Date</th>
+                    <th>Months Worked</th>
+                    <th>Monthly Rate ($)</th>
+                    <th>Total Billed ($)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th class="empNameSpot">placeholder</th>
+                    <td class="empRoleSpot">placeholder</td>
+                    <td class="startDateSpot">placeholder</td>
+                    <td class="monthsWorkedSpot">placeholder</td>
+                    <td class="monthlyRateSpot">placeholder</td>
+                    <td class="totalBilledSpot">placeholder</td>
+                </tr>
+                </tbody>
+            </table>
+            
+            
+            
+            
         </div>
         <div class="col-sm-2 sidenav">
             <h2 id="connect">Connect With Us!</h2>
@@ -156,18 +183,19 @@
 
 <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
 
-// Initialize Firebase
-<script>
-    var config = {
-        apiKey: "AIzaSyBzyWlZhbc2949NipPslrcXRnMAvxC-rLc",
-        authDomain: "oilfield-calculations.firebaseapp.com",
-        databaseURL: "https://oilfield-calculations.firebaseio.com",
-        projectId: "oilfield-calculations",
-        storageBucket: "oilfield-calculations.appspot.com",
-        messagingSenderId: "20281812714"
-    };
-    firebase.initializeApp(config);
-</script>
+
+<!--<script>-->
+    <!--// Initialize Firebase-->
+    <!--var config = {-->
+        <!--apiKey: "AIzaSyBzyWlZhbc2949NipPslrcXRnMAvxC-rLc",-->
+        <!--authDomain: "oilfield-calculations.firebaseapp.com",-->
+        <!--databaseURL: "https://oilfield-calculations.firebaseio.com",-->
+        <!--projectId: "oilfield-calculations",-->
+        <!--storageBucket: "oilfield-calculations.appspot.com",-->
+        <!--messagingSenderId: "20281812714"-->
+    <!--};-->
+    <!--firebase.initializeApp(config);-->
+<!--</script>-->
 
 <script type="text/javascript"
         src="assets/javascript/app.js"></script>
@@ -175,6 +203,7 @@
         src="assets/javascript/calculations.js"></script>
 <script type="text/javascript"
         src="assets/javascript/inputs.js"></script>
+<script type="text/javascript" src="assets/javascript/firebase.js"></script>
 </body>
 
 </html>

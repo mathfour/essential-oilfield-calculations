@@ -14,6 +14,7 @@ $(document).on('click', '#IC', function () {
         e.preventDefault();
         if ($("#diameter").val()>0){
             calculateInnerCapacity();
+
             $("#outputs").html("<br><h3>Standby as we caclulate inner capacity...</h3>");
             console.log("we're attempting to calculate pipe volume")
         }
