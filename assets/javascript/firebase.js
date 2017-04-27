@@ -2,19 +2,15 @@
  * Created by SilverDash on 4/26/17.
  */
 
+// $.removeCookie("oilfieldCalculations");
+
 // bmc: get the cookie value for this user, if they have one
-var userID = "";
+// var userID = "";
     userID = $.cookie("oilfieldCalculations");
     console.log("FYI: the cookie for this computer is " + userID);
-var newUser = false;
+// var newUser = false;
 
-// bmc: if this user doesn't have a cookie value, give him one
-if(!userID){
-    cookieNumber = Math.round(Math.random()*1000000000000000);
-    userID = $.cookie("oilfieldCalculations", cookieNumber);
-    newUser = true;
-    console.log("FYI: the cookie for this computer is " + userID);
-}
+
 
 // bmc: configure the firebase database and initialize
 var configThisAlready = {
@@ -37,8 +33,11 @@ var uberDatabase = firebase.database();
 // bmc: will use this as the cookie instead of the random number
 // var newPostKey = uberDatabase.ref().push().key;
 
-        var userID = uberDatabase.ref().push({
-            computerID: userID,
+// bmc: if this user doesn't have a cookie value, give him one
+if(!userID){
+    // cookieNumber = Math.round(Math.random()*1000000000000000);
+
+        var thisUserID = uberDatabase.ref().push({
             IC: {
                 titlesIC: {
                     innerDiam: "Diameter",
@@ -117,7 +116,14 @@ var uberDatabase = firebase.database();
                 }
         }
     }).key;
-    console.log(userID);
+    console.log(thisUserID);
+    $.cookie("oilfieldCalculations", thisUserID);
+    // newUser = true;
+    console.log("FYI: the cookie for this computer will be " + thisUserID);
+}
+
+justLooking = $.cookie("oilfieldCalculations");
+console.log("this should be the key: " + justLooking);
 
 uberDatabase.ref().on("value", function(snapshot) {
     console.log(snapshot.val());
