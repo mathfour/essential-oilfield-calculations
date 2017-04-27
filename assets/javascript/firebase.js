@@ -3,17 +3,20 @@
  */
 
 // bmc: get the cookie value for this user, if they have one
-var cookieValue = $.cookie("oilfieldCalculations");
-    console.log("FYI: the cookie for this computer is " + cookieValue);
+var userID = "";
+    userID = $.cookie("oilfieldCalculations");
+    console.log("FYI: the cookie for this computer is " + userID);
+var newUser = false;
 
 // bmc: if this user doesn't have a cookie value, give him one
-if(!cookieValue>0){
+if(!userID){
     cookieNumber = Math.round(Math.random()*1000000000000000);
-    theCookie = $.cookie("oilfieldCalculations", cookieNumber);
-    console.log("FYI: the cookie for this computer is " + cookieValue);
+    userID = $.cookie("oilfieldCalculations", cookieNumber);
+    newUser = true;
+    console.log("FYI: the cookie for this computer is " + userID);
 }
 
-
+// bmc: configure the firebase database and initialize
 var configThisAlready = {
     apiKey: "AIzaSyCNyA8ecM-65kxrfuwxxMQr1f0Ujoasr7I",
     authDomain: "essential-oilfield-calcs.firebaseapp.com",
@@ -24,38 +27,113 @@ var configThisAlready = {
 
 firebase.initializeApp(configThisAlready);
 
-// Create a variable to reference the database
 var uberDatabase = firebase.database();
 
-// bmc: initial values
 
-// bmc: person
+// bmc: if it's a new user, set him up with a
+// if(newUser){
 
-computerIdentification = cookieValue;
+// Get a key for a new Post.
+// bmc: will use this as the cookie instead of the random number
+// var newPostKey = uberDatabase.ref().push().key;
 
-// bmc: calculation type (ten)
-// bmc: calculations (last 20?)
+        var userID = uberDatabase.ref().push({
+            computerID: userID,
+            IC: {
+                titlesIC: {
+                    innerDiam: "Diameter",
+                    barrelsPerFoot: "bbl/ft",
+                    feetPerBarrel: "ft/bbl",
+                    gallonsPerFoot: "gal/ft",
+                    feetPerGallon: "ft/gal"
+                }
+            },
+            AC: {
+                titlesAC: {
+                    innerDiam: "OD of Annulus",
+                    outsideDiam: "ID of Annulus",
+                    barrelsPerFoot: "bbl/ft",
+                    feetPerBarrel: "ft/bbl",
+                    gallonsPerFoot: "gal/ft",
+                    feetPerGallon: "ft/gal"
+                }
+            },
+            AV: {
+                titlesAnnV: {
+                    barrelsPerMin: "Flow Rate",
+                    bigDiam: "Large Diam",
+                    smallDiam: "Small Diam",
+                    feetPerMin: "ft/min",
+                    feetPerSec: "ft/sec"
+                }
+            },
+            FIT: {
+                titlesFIT: {
+                    fitRequired: "FIT required",
+                    mudWeight: "Mud Weight",
+                    shoeDepth: "Shoe Depth (TVD)",
+                    presRequired: "psi required"
+                }
+            },
+            FT: {
+                titlesFT: {
+                    surfTemp: "Surface Temperature",
+                    tempGrad: "Temperature Gradient",
+                    formDepth: "Formation TVD",
+                    formTemp: "Formation Temperature (F)"
+                }
+            },
+            HP: {
+                titlesHP: {
+                    mudWeight: "Mud weight",
+                    verticalDepth: "TVD",
+                    hydroPres: "Pressure"
+                }
+            },
+            LOT: {
+                titlesLOT: {
+                    lotPressure: "LOT pressure",
+                    mudWeight: "Mud weight",
+                    shoeDepth: "Shoe Depth/TVD",
+                    lotEquivMudWeight: "LOT equivalent mud weight"
+                }
+            },
+            PG: {
+                titlesPresGrad: {
+                    mudWeight: "Mud weight",
+                    presGrad: "Pressure Gradient"
+                }
+            },
+            SC: {
+                titlesSlugCalc: {
+                    pipeLength: "Desired length dry pipe",
+                    dpCapacity: "Drill pipe capacity",
+                    currentMudWeight: "Current MW",
+                    slugWeight: "Slug Weight",
+                    hydroPresReq: "pressure required",
+                    presGradDif: "pressure gradient dif.",
+                    lengthOfSludInDP: "length of slug",
+                    slugVolume: "slug volume"
+                }
+        }
+    }).key;
+    console.log(userID);
 
-
-// bmc: this works
 uberDatabase.ref().on("value", function(snapshot) {
     console.log(snapshot.val());
 });
-
 // bmc: this works
-uberDatabase.ref().set({
-    innerCap: {
-        anotherBit: "yum",
-        oneMore: "yuk"
-    },
-    annCap: 8
-});
+// bmc: if it's a new cookie, do this
+
+// bmc: if the cookie already exists, pull the info and get it ready to display
+
+
 
 
     // title = snapshot.val().empName;
 
     // If Firebase has a highPrice and highBidder stored (first case)
-    // if (snapshot.child("computerIdentification").exists()) {
+    // if (snapshot.child("userID").exists()) {
         // // Set the initial variables for highBidder equal to the stored values.
         // highBidder = snapshot.val().highBidder;
         // highPrice = parseInt(snapshot.val().highPrice);

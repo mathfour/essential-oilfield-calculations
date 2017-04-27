@@ -38,7 +38,6 @@ $(document).on('click', '#AC', function () {
     $('#inputs').html(
             "<input type='text' placeholder='OD of Annulus' id='outsideDiameter'> inches" + "<br><br>" +
             "<input type='text' placeholder='ID of Annulus' id='insideDiameter'> inches" + "<br><br>" +
-            "<input type='text' placeholder='Depth' id='holeDepth'> feet" + "<br><br>" +
             "<input type='submit' value='Calculate Volume of Annulus' id='calVolOfAnnulus'>");
     $('#calcPageTitle').text("Annular Capacity");
     $("#calVolOfAnnulus").on("click", function (e) {

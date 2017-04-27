@@ -50,7 +50,6 @@ function calculateInnerCapacity() {
 function calculateAnnularCapacity () {
     var outsideDiameter = $("#outsideDiameter").val();
     var insideDiameter = $("#insideDiameter").val();
-    var holeDepth = $("#holeDepth").val();
 
     var sheetName = "annCap"; // bmc: to send inputs
     var formulaName = "annularCapacity"; // bmc: to receive outputs
@@ -64,8 +63,7 @@ function calculateAnnularCapacity () {
             method: "PATCH",
             data: {
                 "inputOne": outsideDiameter,
-                "inputTwo" : insideDiameter,
-                "inputThree" : holeDepth
+                "inputTwo" : insideDiameter
                 // bmc: passing inputs to the front sheet that will then be referenced in the correct calculation sheet
             }
         }).done(function(response) {
@@ -348,7 +346,7 @@ function calculateSlugCalculation() {
             slugVolume = response[0].slugVolume;
 
             $("#outputs").html("<br><h3>The results of your slug calculations are as follows:<br>The hydrostatic pressure required to give desired drop inside drill pipe is " +
-                    hydroPresReq + " psi<br>The difference in pressure gradient between slug and current mud weight is " + presGradDif + "psi/ft<br>The ength of slug in drill pipe is " + lengthOfSludInDP + "feet<br>And the slug volume is " + slugVolume + "bbl</h3>");
+                    hydroPresReq + " psi<br>The difference in pressure gradient between slug and current mud weight is " + presGradDif + "psi/ft<br>The length of slug in drill pipe is " + lengthOfSludInDP + "feet<br>And the slug volume is " + slugVolume + "bbl</h3>");
         });
     });
 }
