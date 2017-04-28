@@ -54,7 +54,9 @@ $(document).on('click', '#IC', function () {
     $("#calcInnerCapacity").on("click", function (e) {
         e.preventDefault();
 
-        if ($("#diameter").val()>0){ // bmc: ensure it's a number
+        compareNumber = parseFloat($("#diameter").val());
+
+        if (compareNumber>0){ // bmc: ensure it's a positive number
 
             calculateInnerCapacity();
 
@@ -121,8 +123,11 @@ $(document).on('click', '#AC', function () {
     $("#calVolOfAnnulus").on("click", function (e) {
         e.preventDefault();
 
+        compareBig = parseFloat($("#outsideDiameter").val());
+        compareLittle = parseFloat($("#insideDiameter").val());
+
         // bmc: validate that we have positive numbers and the OD is bigger than the ID. If it is, then do the calculations. If not, show a prompt to input the correct stuff.
-        if ($("#outsideDiameter").val()>0 && $("#insideDiameter").val()>0 && $("#outsideDiameter").val()>$("#insideDiameter").val()){
+        if (compareLittle > 0 && compareBig > compareLittle){
             calculateAnnularCapacity();
             $("#outputs").html("<br><h3>Standby as we calculate annular capacity...</h3>");
             console.log("we're attempting to calculate capacity");
@@ -170,8 +175,8 @@ $(document).on('click', '#AnnV', function () {
     infoForPersonNow.once("value", function(snapshot) {
         console.log("info for person now: ");
         console.log(snapshot.val());
-        console.log(snapshot.val().AnnV);
-        $.each(snapshot.val().AnnV, function (key, value) {
+        console.log(snapshot.val().AV);
+        $.each(snapshot.val().AV, function (key, value) {
             console.log(value);
             $("#savedCalcs > tbody").append(
                     "<tr><td>" + value.barrelsPerMin +
@@ -187,8 +192,16 @@ $(document).on('click', '#AnnV', function () {
         e.preventDefault();
 
         // bmc: validate that we have positive numbers and the Large Diam is bigger than the Small Diam. If it is, then do the calculations. If not, show a prompt to input the correct stuff.
-        if ($("#smallDiam").val()>0 && $("#bigDiam").val()>$("#smallDiam").val()){
+        // var compareNumber = 17;
+        // var compareBig = 17;
+        // var compareLittle = 17;
+        //
+        // bmc: make sure the numbers we compare are seen as actual numbers
+        compareNumber = parseFloat($("#pumpOutput").val());
+        compareBig = parseFloat($("#bigDiam").val());
+        compareLittle = parseFloat($("#smallDiam").val());
 
+        if (compareNumber > 0 && compareBig > compareLittle && compareLittle > 0){
             calculateAnnularVelocity();
             $("#outputs").html("<br><h3>Standby as we caclulate Annular Velocity...</h3>");
             console.log("we're attempting to calculate velocity")
@@ -253,8 +266,12 @@ $(document).on('click', '#FIT', function () {
     $("#calcPresReq").on("click", function (e) {
         e.preventDefault();
 
+        compareNumber = parseFloat($("#fitRequired").val());
+        compareAnother = parseFloat($("#mudWeight").val());
+        compareYetAnother = parseFloat($("#shoeDepth").val());
+
         // bmc: Make sure all inputs are positive
-        if ($("#fitRequired").val()>0 && $("#mudWeight").val()>0 && $("#shoeDepth").val()>0){
+        if (compareNumber > 0 && compareAnother > 0 && compareYetAnother > 0){
             calculateFormationIntegrityTest();
             $("#outputs").html("<br><h3>Standby as we calculate the pressure required ...</h3>");
             console.log("we're attempting to calculate FIT")
@@ -321,7 +338,14 @@ $(document).on('click', '#FT', function () {
 
         // bmc: Make sure degrees exist and depth is positive
         // bmc: Note: absolute zero is -460 degress F, roughly
-        if ($("#surfTemp").val()> -460 && $("#tempGrad").val()> -460 && $("#calcFormTemp").val()> 0){
+
+        compareNumber = parseFloat($("#surfTemp").val());
+        compareAnother = parseFloat($("#tempGrad").val());
+        compareYetAnother = parseFloat($("#formDepth").val());
+        absZero = -460;
+        console.log(absZero + 1);
+
+        if (compareNumber > absZero && compareAnother > absZero && compareYetAnother > 0){
             calculateFormationTemperature();
             $("#outputs").html("<br><h3>Standby as we calculate the formation temperature" +
                     " ...</h3>");
@@ -384,8 +408,11 @@ $(document).on('click', '#HP', function () {
     $("#calcHydroPres").on("click", function (e) {
         e.preventDefault();
 
+        compareNumber = parseFloat($("#mudWeight").val());
+        compareAnother = parseFloat($("#verticalDepthHP").val());
+
         // bmc: Make sure all inputs are positive
-        if ($("#mudWeight").val()>0 && $("#verticalDepthHP").val()>0){
+        if (compareNumber > 0 && compareAnother > 0){
             calculateHydrostaticPressure();
             $("#outputs").html("<br><h3>Standby as we calculate the hydrostatic pressure ...</h3>");
             console.log("we're attempting to calculate hydrostatic pressure")
@@ -452,8 +479,12 @@ $(document).on('click', '#LOT', function () {
     $("#calcLOT").on("click", function (e) {
         e.preventDefault();
 
+        compareNumber = parseFloat($("#lotPressure").val());
+        compareAnother = parseFloat($("#mudWeightLOT").val());
+        compareYetAnother = parseFloat($("#shoeDepthLOT").val());
+
         // bmc: Make sure all inputs are positive
-        if ($("#lotPressure").val()>0 && $("#mudWeightLOT").val()>0 && $("#shoeDepthLOT").val()>0){
+        if (compareNumber > 0 && compareAnother > 0 && compareYetAnother > 0){
             calculateLeakOffTest();
             $("#outputs").html("<br><h3>Standby as we calculate the LOT equivalent mud weight ...</h3>");
             console.log("we're attempting to calculate LOT")
@@ -512,8 +543,10 @@ $(document).on('click', '#PG', function () {
     $("#calcPresGrad").on("click", function (e) {
         e.preventDefault();
 
+        compareNumber = parseFloat($("#mudWeightPG").val());
+
         // bmc: Make sure the input is positive
-        if ($("#mudWeightPG").val()>0){
+        if (compareNumber > 0){
             calculatePressureGradient();
             $("#outputs").html("<br><h3>Standby as we calculate the pressure gradient ...</h3>");
             console.log("we're attempting to calculate pressure gradient");
@@ -586,8 +619,13 @@ $(document).on('click', '#SC', function () {
     $("#calcSlug").on("click", function (e) {
         e.preventDefault();
 
+        compareNumber = parseFloat($("#pipeLength").val());
+        compareAnother = parseFloat($("#dpCapacity").val());
+        compareYetAnother = parseFloat($("#currentMudWeight").val());
+        compareOneMore = parseFloat($("#slugWeight").val());
+
         // bmc: Make sure all inputs are positive
-        if ($("#pipeLength").val()>0 && $("#dpCapacity").val()>0 && $("#currentMudWeight").val()>0 && $("#slugWeight").val()>0){
+        if (compareNumber > 0 && compareAnother > 0 && compareYetAnother > 0 && compareOneMore > 0){
             calculateSlugCalculation();
             $("#outputs").html("<br><h3>Standby as we do your slug calculations ...</h3>");
             console.log("we're attempting to calculate slug stuff");

@@ -34,7 +34,7 @@ ul {
 }
 
 #outputs {
-    width:50%;
+    width:65%;
 }
 
 /* bmc: need this at 100% to make the gray sidebars go all the way to the bottom */
@@ -54,9 +54,9 @@ ul {
     margin:5px 5px 5px 5px;
 }
 
-.iconLink:hover {
-    text-decoration: none;
-}
+/*.iconLink:hover {*/
+    /*text-decoration: none;*/
+/*}*/
 
 thead {
     font-weight:bold;

@@ -48,8 +48,6 @@ var thisUserDatabase = uberDatabase.ref(thisCookie);
 
 console.log("this is the user we're on: " + thisUserDatabase);
 
-
-
 // bmc: use in the event of needing to reset this whole thing...
 if(thisCookie==="shakamakacoocoo"){
 // uberDatabase.ref().set({

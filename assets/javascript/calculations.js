@@ -38,7 +38,7 @@ function calculateInnerCapacity() {
 
             $("#outputs").html("<br><h3 class='result'>The Inner Capacity is <br>" +
                     barrelsPerFoot + " bbl/ft, or " +
-                    feetPerBarrel + " ft/bbl,<br>" +
+                    feetPerBarrel + " ft/bbl, or<br>" +
                     gallonsPerFoot + " gal/ft, or " +
                     feetPerGallon + " ft/gal</h3>");
 
@@ -102,7 +102,7 @@ function calculateAnnularCapacity () {
 
                 // bmc: need to do a loop here to display volume as requested
 
-                $("#outputs").html("<br><h3>The Annular Capacity is " +
+                $("#outputs").html("<br><h3>The Annular Capacity is <br>" +
                         barrelsPerFoot + " bbl/ft, or " +
                         feetPerBarrel + " ft/bbl, or <br>" +
                         gallonsPerFoot + " gal/ft, or " +
@@ -170,7 +170,7 @@ function calculateAnnularVelocity () {
                 feetPerSec = response[0].feetPerSec;
 
                 $("#outputs").html("<br><h3>The Annular Velocity is <br>" +
-                        feetPerMin + " ft/min and " +
+                        feetPerMin + " ft/min or<br>" +
                         feetPerSec + " ft/sec</h3>");
 
                 // bmc: reference just this user and his IC data
@@ -189,11 +189,11 @@ function calculateAnnularVelocity () {
                 // // bmc: put the information in the list of saved calculations
 
                 $("#savedCalcs > tbody").append(
-                        "<tr><td>" + pumpOutput + " inches" +
-                        "</td><td>" + bigDiam + " bbl/ft" +
-                        "</td><td>" + smallDiam + " ft/bbl" +
-                        "</td><td>" + feetPerMin + " gal/ft" +
-                        "</td><td>" + feetPerSec + " ft/gal" +
+                        "<tr><td>" + pumpOutput + " bbl/min" +
+                        "</td><td>" + bigDiam + " inches" +
+                        "</td><td>" + smallDiam + " inches" +
+                        "</td><td>" + feetPerMin + " ft/min" +
+                        "</td><td>" + feetPerSec + " ft/sec" +
                         "</td></tr>");
                 $("body").css("cursor", "default");
             });
@@ -267,8 +267,8 @@ function calculateFormationTemperature() {
     var tempGrad = $("#tempGrad").val();
     var formDepth = $("#formDepth").val();
     var formTemp = ""; // answer
-    var formulaName = "formationIntegrityTest"; // bmc: to pass the inputs
-    var sheetName = "FIT"; // bmc: to get the results
+    var formulaName = "formationTemperature"; // bmc: to pass the inputs
+    var sheetName = "formTemp"; // bmc: to get the results
 
     var queryGiveURL = "https://sheetsu.com/apis/v1.0/5b28081fedac/formula/" + formulaName; // bmc: to pass inputs
 
@@ -405,8 +405,8 @@ function calculateLeakOffTest() {
 
             lotEquivMudWeight = response[0].lotEquivMudWeight;
 
-            $("#outputs").html("<br><h3>The LOT equivalent mud weight is <br>" +
-                    lotEquivMudWeight + "ppg</h3>");
+            $("#outputs").html("<br><h3>The LOT equivalent mud weight is " +
+                    lotEquivMudWeight + " ppg</h3>");
 
             // bmc: reference just this user and his IC data
             var thisUserLOT = thisUserDatabase.child("LOT");
@@ -417,7 +417,7 @@ function calculateLeakOffTest() {
                 lotPressure: lotPressure + " psi",
                 mudWeight: mudWeightLOT + " ppg",
                 shoeDepth: shoeDepthLOT + " feet",
-                lotEquivMudWeight: lotEquivMudWeight + " ppg",
+                lotEquivMudWeight: lotEquivMudWeight + " ppg"
             });
 
             // // bmc: put the information in the list of saved calculations
@@ -522,8 +522,8 @@ function calculateSlugCalculation() {
             lengthOfSludInDP = response[0].lengthOfSludInDP;
             slugVolume = response[0].slugVolume;
 
-            $("#outputs").html("<br><h3>The results of your slug calculations are as follows:<br>The hydrostatic pressure required to give desired drop inside drill pipe is " +
-                    hydroPresReq + " psi<br>The difference in pressure gradient between slug and current mud weight is " + presGradDif + "psi/ft<br>The length of slug in drill pipe is " + lengthOfSludInDP + "feet<br>And the slug volume is " + slugVolume + "bbl</h3>");
+            $("#outputs").html("<br><h3>The pressure required is " +
+                    hydroPresReq + " psi<br>The pressure gradient difference is " + presGradDif + "psi/ft<br>The length of slug is " + lengthOfSludInDP + "feet<br>The slug volume is " + slugVolume + "bbl</h3>");
 
             // bmc: reference just this user and his IC data
             var thisUserSC = thisUserDatabase.child("SC");
