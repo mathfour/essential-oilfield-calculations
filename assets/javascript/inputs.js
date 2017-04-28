@@ -5,14 +5,46 @@
 
 $(document).on('click', '#IC', function () {
     console.log('#IC');
-    $('#outputs').html('');
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
+
+    if(bonsAjaxCall != null){
+        bonsAjaxCall.abort();
+        bonsAjaxCall = null;
+    }
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
+    $('#outputs').html(''); // bmc: start fresh
     $('#inputs').html(
-            "<input type='text' placeholder='Diameter' id='diameter'> inches" + "<br><br>" +
-            "<input type='submit' value='Calculate Inner Capacity' id='calcInnerCapacity'>");
+        "<input type='text' placeholder='Diameter' id='diameter'> inches" + "<br><br>" +
+        "<input type='submit' value='Calculate Inner Capacity' id='calcInnerCapacity'>");
+
     $('#calcPageTitle').text("Inner Capacity");
+
+    var titlesForTable = uberDatabase.ref("ColHeaders").child("titlesIC");
+    console.log("titles for table not snapshot: " + titlesForTable);
+    titlesForTable.on("value", function(snapshot) {
+        console.log("titles for table in snapshot: ");
+        console.log(snapshot.val());
+        $("#savedCalcs > thead").html("<tr><td>" + snapshot.val().innerDiam + "</td><td>" + snapshot.val().barrelsPerFoot + "</td><td>" + snapshot.val().feetPerBarrel + "</td><td>" + snapshot.val().gallonsPerFoot + "</td><td>" + snapshot.val().feetPerGallon + "</td></tr>");
+    }); // bmc: end of titlesForTable.on("value", ...
+
+    var infoForPersonNow = uberDatabase.ref(thisCookie);
+    infoForPersonNow.once("value", function(snapshot) {
+        console.log("info for person now: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val().IC);
+        $.each(snapshot.val().IC, function (key, value) {
+            console.log(value);
+            $("#savedCalcs > tbody").append("<tr><td>" + value.innerDiam + "</td><td>" + value.barrelsPerFoot + "</td><td>" +
+                    value.feetPerBarrel + "</td><td>" + value.gallonsPerFoot + "</td><td>" + value.feetPerGallon + "</td></tr>");
+        }) // bmc:  end of .each(snapshot.val().IC
+    }); // bmc: end of infoForPersonNow.on("value"
+
+    // bmc: now for the actual calculations when they click the calculate button
     $("#calcInnerCapacity").on("click", function (e) {
         e.preventDefault();
-        if ($("#diameter").val()>0){
+
+        if ($("#diameter").val()>0){ // bmc: ensure it's a number
+
             calculateInnerCapacity();
 
             $("#outputs").html("<br><h3>Standby as we caclulate inner capacity...</h3>");
@@ -21,9 +53,8 @@ $(document).on('click', '#IC', function () {
         else {
             $("#outputs").html("<br><h3>Please enter only positive numbers.</h3>");
         }
-
     });
-});
+}); // bmc: end of $(document).on('click', '#IC'
 
 $(document).on('click', '#AC', function () {
     console.log('#AC');
@@ -33,13 +64,47 @@ $(document).on('click', '#AC', function () {
         bonsAjaxCall.abort();
         bonsAjaxCall = null;
     }
-
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
     $('#outputs').html('');
     $('#inputs').html(
             "<input type='text' placeholder='OD of Annulus' id='outsideDiameter'> inches" + "<br><br>" +
             "<input type='text' placeholder='ID of Annulus' id='insideDiameter'> inches" + "<br><br>" +
             "<input type='submit' value='Calculate Volume of Annulus' id='calVolOfAnnulus'>");
     $('#calcPageTitle').text("Annular Capacity");
+
+    var titlesForTable = uberDatabase.ref("ColHeaders").child("titlesAC");
+    console.log("titles for table not snapshot: " + titlesForTable);
+    titlesForTable.on("value", function(snapshot) {
+        console.log("titles for table in snapshot: ");
+        console.log(snapshot.val());
+        $("#savedCalcs > thead").html(
+                "<tr><td>" + snapshot.val().innerDiam +
+                "</td><td>" + snapshot.val().outsideDiam +
+                "</td><td>" + snapshot.val().barrelsPerFoot +
+                "</td><td>" + snapshot.val().feetPerBarrel +
+                "</td><td>" + snapshot.val().gallonsPerFoot +
+                "</td><td>" + snapshot.val().feetPerGallon +
+                "</td></tr>");
+    }); // bmc: end of titlesForTable.on("value", ...
+
+    var infoForPersonNow = uberDatabase.ref(thisCookie);
+    infoForPersonNow.once("value", function(snapshot) {
+        console.log("info for person now: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val().AC);
+        $.each(snapshot.val().AC, function (key, value) {
+            console.log(value);
+            $("#savedCalcs > tbody").append(
+                    "<tr><td>" + value.innerDiam +
+                    "</td><td>" + value.outsideDiam +
+                    "</td><td>" + value.barrelsPerFoot +
+                    "</td><td>" + value.feetPerBarrel +
+                    "</td><td>" + value.gallonsPerFoot +
+                    "</td><td>" + value.feetPerGallon +
+                    "</td></tr>");
+        }) // bmc:  end of .each(snapshot.val().IC
+    }); // bmc: end of infoForPersonNow.on("value" // bmc: code for updating database... NEEDS TO BE ADJUSTED
+
     $("#calVolOfAnnulus").on("click", function (e) {
         e.preventDefault();
 
@@ -63,7 +128,7 @@ $(document).on('click', '#AnnV', function () {
         bonsAjaxCall.abort();
         bonsAjaxCall = null;
     }
-
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
     $('#outputs').html('');
     $('#inputs').html(
             "<input type='text' placeholder='Flow Rate' id='pumpOutput'> bbl/min" + "<br><br>" +
@@ -71,6 +136,39 @@ $(document).on('click', '#AnnV', function () {
             "<input type='text' placeholder='Small Diam' id='smallDiam'> inches" + "<br><br>" +
             "<input type='submit' value='Calculate Annular Velocity' id='calcAnnVel'>");
     $('#calcPageTitle').text("Annular Velocity");
+
+
+    var titlesForTable = uberDatabase.ref("ColHeaders").child("titlesAnnV");
+    console.log("titles for table not snapshot: " + titlesForTable);
+    titlesForTable.on("value", function(snapshot) {
+        console.log("titles for table in snapshot: ");
+        console.log(snapshot.val());
+        $("#savedCalcs > thead").html(
+                "<tr><td>" + snapshot.val().barrelsPerMin +
+                "</td><td>" + snapshot.val().bigDiam +
+                "</td><td>" + snapshot.val().smallDiam +
+                "</td><td>" + snapshot.val().feetPerMin +
+                "</td><td>" + snapshot.val().feetPerSec +
+                "</td></tr>");
+    }); // bmc: end of titlesForTable.on("value", ...
+
+    var infoForPersonNow = uberDatabase.ref(thisCookie);
+    infoForPersonNow.once("value", function(snapshot) {
+        console.log("info for person now: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val().AnnV);
+        $.each(snapshot.val().AnnV, function (key, value) {
+            console.log(value);
+            $("#savedCalcs > tbody").append(
+                    "<tr><td>" + value.barrelsPerMin +
+                    "</td><td>" + value.bigDiam +
+                    "</td><td>" + value.smallDiam +
+                    "</td><td>" + value.feetPerMin +
+                    "</td><td>" + value.feetPerSec +
+                    "</td></tr>");
+        }) // bmc:  end of .each(snapshot.val().IC
+    }); // bmc: end of infoForPersonNow.on("value"
+
     $("#calcAnnVel").on("click", function (e) {
         e.preventDefault();
 
@@ -92,20 +190,52 @@ $(document).on('click', '#AnnV', function () {
 
 $(document).on('click', '#FIT', function () {
     console.log('#FIT');
-    $('#outputs').html('');
 
     // bmc: if there's a previous ajax call happening when the user clicks over to this calculation, this code will abort that call
     if(bonsAjaxCall != null){
         bonsAjaxCall.abort();
         bonsAjaxCall = null;
     }
-
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
+    $('#outputs').html('');
     $('#inputs').html(
             "<input type='text' placeholder='FIT required' id='fitRequired'> ppg" + "<br><br>" +
             "<input type='text' placeholder='Mud Weight' id='mudWeight'> ppg" + "<br><br>" +
             "<input type='text' placeholder='Shoe Depth (TVD)' id='shoeDepth'> feet" + "<br><br>" +
             "<input type='submit' value='Calculate Pressure Required' id='calcPresReq'>");
     $('#calcPageTitle').text("Formation Integrity Test");
+
+
+    var titlesForTable = uberDatabase.ref("ColHeaders").child("titlesFIT");
+    console.log("titles for table not snapshot: " + titlesForTable);
+    titlesForTable.on("value", function(snapshot) {
+        console.log("titles for table in snapshot: ");
+        console.log(snapshot.val());
+        $("#savedCalcs > thead").html(
+                "<tr><td>" + snapshot.val().fitRequired +
+                "</td><td>" + snapshot.val().mudWeight +
+                "</td><td>" + snapshot.val().shoeDepth +
+                "</td><td>" + snapshot.val().presRequired +
+                "</td></tr>");
+    }); // bmc: end of titlesForTable.on("value", ...
+
+    var infoForPersonNow = uberDatabase.ref(thisCookie);
+    infoForPersonNow.once("value", function(snapshot) {
+        console.log("info for person now: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val().FIT);
+        $.each(snapshot.val().FIT, function (key, value) {
+            console.log(value);
+            $("#savedCalcs > tbody").append(
+                    "<tr><td>" + value.fitRequired +
+                    "</td><td>" + value.mudWeight +
+                    "</td><td>" + value.shoeDepth +
+                    "</td><td>" + value.presRequired +
+                    "</td></tr>");
+        }) // bmc:  end of .each(snapshot.val().IC
+    }); // bmc: end of infoForPersonNow.on("value" // bmc: ADJUST
+
+
     $("#calcPresReq").on("click", function (e) {
         e.preventDefault();
 
@@ -130,7 +260,7 @@ $(document).on('click', '#FT', function () {
         bonsAjaxCall.abort();
         bonsAjaxCall = null;
     }
-
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
     $('#outputs').html('');
     $('#inputs').html(
             "<input type='text' placeholder='Surface Temperature' id='surfTemp'> degrees F" + "<br><br>" +
@@ -138,6 +268,38 @@ $(document).on('click', '#FT', function () {
             "<input type='text' placeholder='Formation TVD' id='formDepth'> feet" + "<br><br>" +
             "<input type='submit' value='Calculate Formation Temperature' id='calcFormTemp'>");
     $('#calcPageTitle').text("Formation Temperature");
+
+
+    var titlesForTable = uberDatabase.ref("ColHeaders").child("titlesFT");
+    console.log("titles for table not snapshot: " + titlesForTable);
+    titlesForTable.on("value", function(snapshot) {
+        console.log("titles for table in snapshot: ");
+        console.log(snapshot.val());
+        $("#savedCalcs > thead").html(
+                "<tr><td>" + snapshot.val().surfTemp +
+                "</td><td>" + snapshot.val().tempGrad +
+                "</td><td>" + snapshot.val().formDepth +
+                "</td><td>" + snapshot.val().formTemp +
+                "</td></tr>");
+    }); // bmc: end of titlesForTable.on("value", ...
+
+    var infoForPersonNow = uberDatabase.ref(thisCookie);
+    infoForPersonNow.once("value", function(snapshot) {
+        console.log("info for person now: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val().FT);
+        $.each(snapshot.val().FT, function (key, value) {
+            console.log(value);
+            $("#savedCalcs > tbody").append(
+                    "<tr><td>" + value.surfTemp +
+                    "</td><td>" + value.tempGrad +
+                    "</td><td>" + value.formDepth +
+                    "</td><td>" + value.formTemp +
+                    "</td></tr>");
+        }) // bmc:  end of .each(snapshot.val().IC
+    }); // bmc: end of infoForPersonNow.on("value" // bmc: ADJUST
+
+
     $("#calcFormTemp").on("click", function (e) {
         e.preventDefault();
 
@@ -163,13 +325,43 @@ $(document).on('click', '#HP', function () {
         bonsAjaxCall.abort();
         bonsAjaxCall = null;
     }
-
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
     $('#outputs').html('');
     $('#inputs').html(
             "<input type='text' placeholder='Mud weight' id='mudWeight'> ppg" + "<br><br>" +
             "<input type='text' placeholder='TVD' id='verticalDepthHP'> feet" + "<br><br>" +
             "<input type='submit' value='Calculate Hydrostatic Pressure' id='calcHydroPres'>");
     $('#calcPageTitle').text("Hydrostatic Pressure");
+
+
+    var titlesForTable = uberDatabase.ref("ColHeaders").child("titlesHP");
+    console.log("titles for table not snapshot: " + titlesForTable);
+    titlesForTable.on("value", function(snapshot) {
+        console.log("titles for table in snapshot: ");
+        console.log(snapshot.val());
+        $("#savedCalcs > thead").html(
+                "<tr><td>" + snapshot.val().mudWeight +
+                "</td><td>" + snapshot.val().verticalDepth +
+                "</td><td>" + snapshot.val().hydroPres +
+                "</td></tr>");
+    }); // bmc: end of titlesForTable.on("value", ...
+
+    var infoForPersonNow = uberDatabase.ref(thisCookie);
+    infoForPersonNow.once("value", function(snapshot) {
+        console.log("info for person now: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val().HP);
+        $.each(snapshot.val().HP, function (key, value) {
+            console.log(value);
+            $("#savedCalcs > tbody").append(
+                    "<tr><td>" + value.mudWeight +
+                    "</td><td>" + value.verticalDepth +
+                    "</td><td>" + value.hydroPres +
+                    "</td></tr>");
+        }) // bmc:  end of .each(snapshot.val().IC
+    }); // bmc: end of infoForPersonNow.on("value" // bmc: ADJUST
+
+
     $("#calcHydroPres").on("click", function (e) {
         e.preventDefault();
 
@@ -190,20 +382,52 @@ $(document).on('click', '#HP', function () {
 
 $(document).on('click', '#LOT', function () {
     console.log('#LOT');
-    $('#outputs').html('');
+
 
     // bmc: if there's a previous ajax call happening when the user clicks over to this calculation, this code will abort that call
     if(bonsAjaxCall != null){
         bonsAjaxCall.abort();
         bonsAjaxCall = null;
     }
-
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
+    $('#outputs').html('');
     $('#inputs').html(
             "<input type='text' placeholder='LOT pressure' id='lotPressure'> psi" + "<br><br>" +
             "<input type='text' placeholder='Mud weight' id='mudWeightLOT'> ppg" + "<br><br>" +
             "<input type='text' placeholder='Shoe Depth/TVD' id='shoeDepthLOT'> feet" + "<br><br>" +
             "<input type='submit' value='Calculate LOT' id='calcLOT'>");
     $('#calcPageTitle').text("Leak Off Test");
+
+
+    var titlesForTable = uberDatabase.ref("ColHeaders").child("titlesLOT");
+    console.log("titles for table not snapshot: " + titlesForTable);
+    titlesForTable.on("value", function(snapshot) {
+        console.log("titles for table in snapshot: ");
+        console.log(snapshot.val());
+        $("#savedCalcs > thead").html(
+                "<tr><td>" + snapshot.val().lotPressure +
+                "</td><td>" + snapshot.val().mudWeight +
+                "</td><td>" + snapshot.val().shoeDepth +
+                "</td><td>" + snapshot.val().lotEquivMudWeight +
+                "</td></tr>");
+    }); // bmc: end of titlesForTable.on("value", ...
+
+    var infoForPersonNow = uberDatabase.ref(thisCookie);
+    infoForPersonNow.once("value", function(snapshot) {
+        console.log("info for person now: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val().LOT);
+        $.each(snapshot.val().LOT, function (key, value) {
+            console.log(value);
+            $("#savedCalcs > tbody").append(
+                    "<tr><td>" + value.lotPressure +
+                    "</td><td>" + value.mudWeight +
+                    "</td><td>" + value.shoeDepth +
+                    "</td><td>" + value.lotEquivMudWeight +
+                    "</td></tr>");
+        }) // bmc:  end of .each(snapshot.val().IC
+    }); // bmc: end of infoForPersonNow.on("value" // bmc: ADJUST
+
     $("#calcLOT").on("click", function (e) {
         e.preventDefault();
 
@@ -228,12 +452,40 @@ $(document).on('click', '#PG', function () {
         bonsAjaxCall.abort();
         bonsAjaxCall = null;
     }
-
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
     $('#outputs').html('');
     $('#inputs').html(
             "<input type='text' placeholder='Mud weight' id='mudWeightPG'> ppg" + "<br><br>" +
             "<input type='submit' value='Calculate Pressure Gradient' id='calcPresGrad'>");
     $('#calcPageTitle').text("Pressure Gradient");
+
+
+    var titlesForTable = uberDatabase.ref("ColHeaders").child("titlesPG");
+    console.log("titles for table not snapshot: " + titlesForTable);
+    titlesForTable.on("value", function(snapshot) {
+        console.log("titles for table in snapshot: ");
+        console.log(snapshot.val());
+        $("#savedCalcs > thead").html(
+                "<tr><td>" + snapshot.val().mudWeight +
+                "</td><td>" + snapshot.val().presGrad +
+                "</td></tr>");
+    }); // bmc: end of titlesForTable.on("value", ...
+
+    var infoForPersonNow = uberDatabase.ref(thisCookie);
+    infoForPersonNow.once("value", function(snapshot) {
+        console.log("info for person now: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val().PG);
+        $.each(snapshot.val().PG, function (key, value) {
+            console.log(value);
+            $("#savedCalcs > tbody").append(
+                    "<tr><td>" + value.mudWeight +
+                    "</td><td>" + value.presGrad +
+                    "</td></tr>");
+        }) // bmc:  end of .each(snapshot.val().IC
+    }); // bmc: end of infoForPersonNow.on("value" // bmc: ADJUST
+
+
     $("#calcPresGrad").on("click", function (e) {
         e.preventDefault();
 
@@ -258,7 +510,7 @@ $(document).on('click', '#SC', function () {
         bonsAjaxCall.abort();
         bonsAjaxCall = null;
     }
-
+    $("#savedCalcs > tbody").html(""); // bmc: start fresh
     $('#outputs').html('');
     $('#inputs').html(
             "<input type='text' placeholder='Desired length dry pipe' id='pipeLength'> feet" + "<br><br>" +
@@ -267,6 +519,45 @@ $(document).on('click', '#SC', function () {
             "<input type='text' placeholder='Slug Weight' id='slugWeight'> ppg" + "<br><br>" +
             "<input type='submit' value='Do Slug Calculations' id='calcSlug'>");
     $('#calcPageTitle').text("Slug Calculation");
+
+
+    var titlesForTable = uberDatabase.ref("ColHeaders").child("titlesSC");
+    console.log("titles for table not snapshot: " + titlesForTable);
+    titlesForTable.on("value", function(snapshot) {
+        console.log("titles for table in snapshot: ");
+        console.log(snapshot.val());
+        $("#savedCalcs > thead").html(
+                "<tr><td>" + snapshot.val().pipeLength +
+                "</td><td>" + snapshot.val().dpCapacity +
+                "</td><td>" + snapshot.val().currentMudWeight +
+                "</td><td>" + snapshot.val().slugWeight +
+                "</td><td>" + snapshot.val().hydroPresReq +
+                "</td><td>" + snapshot.val().presGradDif +
+                "</td><td>" + snapshot.val().lengthOfSludInDP +
+                "</td><td>" + snapshot.val().slugVolume +
+                "</td></tr>");
+    }); // bmc: end of titlesForTable.on("value", ...
+
+    var infoForPersonNow = uberDatabase.ref(thisCookie);
+    infoForPersonNow.once("value", function(snapshot) {
+        console.log("info for person now: ");
+        console.log(snapshot.val());
+        console.log(snapshot.val().SC);
+        $.each(snapshot.val().SC, function (key, value) {
+            console.log(value);
+            $("#savedCalcs > tbody").append(
+                    "<tr><td>" + value.pipeLength +
+                    "</td><td>" + value.dpCapacity +
+                    "</td><td>" + value.currentMudWeight +
+                    "</td><td>" + value.slugWeight +
+                    "</td><td>" + value.hydroPresReq +
+                    "</td><td>" + value.presGradDif +
+                    "</td><td>" + value.lengthOfSludInDP +
+                    "</td><td>" + value.slugVolume +
+                    "</td></tr>");
+        }) // bmc:  end of .each(snapshot.val().IC
+    }); // bmc: end of infoForPersonNow.on("value" // bmc: ADJUST
+
     $("#calcSlug").on("click", function (e) {
         e.preventDefault();
 

@@ -42,6 +42,11 @@ ul {
     height:100%;
 }
 
+/* bmc: already in the master */
+#tableAreaHeading {
+    margin-top: 24px;
+}
+
 /********** NAVITGATION **********/
 .navbtn {
     background-color: #0005DE;

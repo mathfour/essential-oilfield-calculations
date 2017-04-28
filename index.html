@@ -124,30 +124,14 @@
                 Click a calculation on the left.
             </form>
             <div id="outputs"></div>
-            <!--<div id="save-formular"></div>-->
             
-            <h3>Saved Calculations</h3>
-            <p id="display">Inner Capacity (put the name of the calcuation here dynamically)</p>
-            <table class="table">
+            
+            <h3 id="tableAreaHeading">Saved Calculations</h3>
+           
+            <table class="table" id="savedCalcs">
                 <thead>
-                <tr>
-                    <th class="somethingTitle">Employee Name</th>
-                    <th>Role</th>
-                    <th>Start Date</th>
-                    <th>Months Worked</th>
-                    <th>Monthly Rate ($)</th>
-                    <th>Total Billed ($)</th>
-                </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th class="empNameSpot">placeholder</th>
-                    <td class="empRoleSpot">placeholder</td>
-                    <td class="startDateSpot">placeholder</td>
-                    <td class="monthsWorkedSpot">placeholder</td>
-                    <td class="monthlyRateSpot">placeholder</td>
-                    <td class="totalBilledSpot">placeholder</td>
-                </tr>
                 </tbody>
             </table>
             
@@ -172,6 +156,7 @@
                   <img src="images/stackoverflow.png"
                        class="icon"
                        alt="StackOverflow"></a>
+            <br><br>
         </div>
     </div>
 </div>
@@ -181,7 +166,6 @@
     <p>&copy; 2017 Tomagocha Ltd.</p>
 </footer>
 
-<script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
 
 
 <!--<script>-->
@@ -197,6 +181,9 @@
     <!--firebase.initializeApp(config);-->
 <!--</script>-->
 
+<!-- bmc: Stockticker script -->
+<!--<script type="text/javascript" src="stockTickerAPI.js"></script>-->
+<script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
 <script type="text/javascript"
         src="assets/javascript/app.js"></script>
 <script type="text/javascript"
