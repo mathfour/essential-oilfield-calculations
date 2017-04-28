@@ -37,9 +37,9 @@ function calculateInnerCapacity() {
             feetPerGallon = response[0].feetPerGallon;
 
             $("#outputs").html("<br><h3 class='result'>The Inner Capacity is <br>" +
-                    barrelsPerFoot + " bbl/ft, <br>" +
-                    feetPerBarrel + " ft/bbl, <br>" +
-                    gallonsPerFoot + " gal/ft, <br>" +
+                    barrelsPerFoot + " bbl/ft, or " +
+                    feetPerBarrel + " ft/bbl,<br>" +
+                    gallonsPerFoot + " gal/ft, or " +
                     feetPerGallon + " ft/gal</h3>");
 
             // bmc: reference just this user and his IC data
@@ -64,7 +64,7 @@ function calculateInnerCapacity() {
                     "</td><td>" + gallonsPerFoot + " gal/ft" +
                     "</td><td>" + feetPerGallon + " ft/gal" +
                     "</td></tr>");
-
+            $("body").css("cursor", "default");
         });
     });
 
@@ -103,10 +103,10 @@ function calculateAnnularCapacity () {
                 // bmc: need to do a loop here to display volume as requested
 
                 $("#outputs").html("<br><h3>The Annular Capacity is " +
-                        barrelsPerFoot + " bbl/ft" +
-                        feetPerBarrel + " ft/bbl" +
-                        gallonsPerFoot + " gal/ft, <br>" +
-                        feetPerGallon + " ft/gal, <br></h3>");
+                        barrelsPerFoot + " bbl/ft, or " +
+                        feetPerBarrel + " ft/bbl, or <br>" +
+                        gallonsPerFoot + " gal/ft, or " +
+                        feetPerGallon + " ft/gal</h3>");
 
                 // bmc: reference just this user and his IC data
                 var thisUserAC = thisUserDatabase.child("AC");
@@ -114,8 +114,8 @@ function calculateAnnularCapacity () {
 
                 // bmc: create a set of data in firebase from the information inputs and outputs
                 thisUserAC.push({
+                    outsideDiam : outsideDiameter + " inches",
                     innerDiam: insideDiameter + " inches",
-                    outsideDiam: outsideDiameter + " inches",
                     barrelsPerFoot: barrelsPerFoot + " bbl/ft",
                     feetPerBarrel: feetPerBarrel + " ft/bbl",
                     gallonsPerFoot: gallonsPerFoot + " gal/ft",
@@ -125,13 +125,14 @@ function calculateAnnularCapacity () {
                 // // bmc: put the information in the list of saved calculations
 
                 $("#savedCalcs > tbody").append(
-                        "<tr><td>" + insideDiameter + " inches" +
-                        "</td><td>" + outsideDiameter + " inches" +
+                        "<tr><td>" + outsideDiameter + " inches" +
+                        "</td><td>" + insideDiameter + " inches" +
                         "</td><td>" + barrelsPerFoot + " bbl/ft" +
                         "</td><td>" + feetPerBarrel + " ft/bbl" +
                         "</td><td>" + gallonsPerFoot + " gal/ft" +
                         "</td><td>" + feetPerGallon + " ft/gal" +
                         "</td></tr>");
+                $("body").css("cursor", "default");
             });
         });
 
@@ -169,8 +170,8 @@ function calculateAnnularVelocity () {
                 feetPerSec = response[0].feetPerSec;
 
                 $("#outputs").html("<br><h3>The Annular Velocity is <br>" +
-                        feetPerMin + " ft/min and <br>" +
-                        feetPerSec + " ft/sec <br></h3>");
+                        feetPerMin + " ft/min and " +
+                        feetPerSec + " ft/sec</h3>");
 
                 // bmc: reference just this user and his IC data
                 var thisUserAV = thisUserDatabase.child("AV");
@@ -194,6 +195,7 @@ function calculateAnnularVelocity () {
                         "</td><td>" + feetPerMin + " gal/ft" +
                         "</td><td>" + feetPerSec + " ft/gal" +
                         "</td></tr>");
+                $("body").css("cursor", "default");
             });
         });
 
@@ -254,6 +256,7 @@ function calculateFormationIntegrityTest() {
                     "</td><td>" + shoeDepth + " feet" +
                     "</td><td>" + presRequired + " psi" +
                     "</td></tr>");
+            $("body").css("cursor", "default");
         });
     });
 }
@@ -311,6 +314,7 @@ function calculateFormationTemperature() {
                     "</td><td>" + formDepth + " feet" +
                     "</td><td>" + formTemp + " degrees F" +
                     "</td></tr>");
+            $("body").css("cursor", "default");
         });
     });
 }
@@ -365,6 +369,7 @@ function calculateHydrostaticPressure() {
                     "</td><td>" + verticalDepthHP + " feet" +
                     "</td><td>" + hydroPres + " psi" +
                     "</td></tr>");
+            $("body").css("cursor", "default");
         });
     });
 }
@@ -423,6 +428,7 @@ function calculateLeakOffTest() {
                     "</td><td>" + shoeDepthLOT + " feet" +
                     "</td><td>" + lotEquivMudWeight + " ppg" +
                     "</td></tr>");
+            $("body").css("cursor", "default");
         });
     });
 }
@@ -473,6 +479,7 @@ function calculatePressureGradient() {
                     "<tr><td>" + mudWeightPG + " ppg" +
                     "</td><td>" + presGrad + " psi/ft" +
                     "</td></tr>");
+            $("body").css("cursor", "default");
         });
     });
 }
@@ -546,6 +553,7 @@ function calculateSlugCalculation() {
                     "</td><td>" + lengthOfSludInDP + " feet" +
                     "</td><td>" + slugVolume + " bbl" +
                     "</td></tr>");
+            $("body").css("cursor", "default");
         });
     });
 }
