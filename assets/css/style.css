@@ -30,11 +30,11 @@ ul {
 }
 
 .result {
-    line-height:2em;
+    line-height:1.3em;
 }
 
 #outputs {
-    width:50%;
+    width:65%;
 }
 
 /* bmc: need this at 100% to make the gray sidebars go all the way to the bottom */
@@ -46,6 +46,33 @@ ul {
 #tableAreaHeading {
     margin-top: 24px;
 }
+
+.icon {
+    height: 40px;
+    width: 40px;
+    float: left;
+    margin:5px 5px 5px 5px;
+}
+
+/*.iconLink:hover {*/
+    /*text-decoration: none;*/
+/*}*/
+
+thead {
+    font-weight:bold;
+    font-size:1.3em;
+}
+
+
+
+a#github {
+    background-image: url("https://cdn1.iconfinder.com/data/icons/simple-icons/256/github-256-black.png");
+    display: block;
+    width: 50px;
+    height: 50px;
+}
+
+
 
 /********** NAVITGATION **********/
 .navbtn {
